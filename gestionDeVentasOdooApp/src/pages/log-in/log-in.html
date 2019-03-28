@@ -1,0 +1,34 @@
+<!--
+  Generated template for the LogInPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Inicio de Sesión</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <img src="../../assets/img/ValperApp.png" alt="Valper">
+  <form (ngSubmit)="login()">
+    <ion-col align-self: center>
+      <ion-input type="text" placeholder="Usuario" name="user" [(ngModel)]=user></ion-input>
+      <ion-input type="text" placeholder="Contraseña" name="pwd" [(ngModel)]=pwd></ion-input>
+      <button ion-item color="primary" type="submit">Log-In</button>
+    </ion-col>
+  </form>
+  <button ion-item (click)="advSwitch()">
+    <ion-icon name="construct"></ion-icon>
+    Opciones Avanzadas
+  </button>
+  <ion-card [hidden]="swtch">
+    <form (ngSubmit)="changeUrl()">
+      <ion-col align-self: center>
+        <ion-input type="url" placeholder="Url Odoo" name="odooUrl"  [(ngModel)]="odooUrl"></ion-input>
+        <button ion-item color="primary" type="submit">Guardar</button>
+      </ion-col>
+    </form>
+  </ion-card>
+</ion-content>
