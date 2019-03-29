@@ -1,27 +1,23 @@
-import {
-  Injectable
-} from '@angular/core';
-import {
-    HttpHeaders,
-    HttpClient
-  } from '@angular/common/http';
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Rx';
+import { Injectable } from "@angular/core";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
+import "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
+import { Http } from "@angular/http";
 
 @Injectable()
 export class odooLoginReq {
-
   private jsonRpcID: number = 0;
   public headers;
   private odoo_server: string;
+  private http_auth: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: Http) {}
 
   /**
    * Inicializa variables de este ts
    */
   public init(configs: any) {
-    console.log("Init: "+JSON.stringify(configs));
+    console.log("Init: " + JSON.stringify(configs));
     this.odoo_server = configs.odoo_server;
     this.http_auth = configs.http_auth || null;
   }
@@ -38,15 +34,23 @@ export class odooLoginReq {
       context: {}
     };
     console.log("Parametros para log: " + JSON.stringify(params));
-    return this.sendRequest("/web/session/authenticate/", params)//Enviamos la request a la clase con la url de donde se autentifica  
+    return this.sendRequest("/web/session/authenticate/", params); //Enviamos la request a la clase con la url de donde se autentifica
   }
 
-  public sendRequest(url: string, params: Object): Observable < any > {
-    console.log("Send request: "+ JSON.stringify(params) + "a url: "+ this.odoo_server+url);
+  public sendRequest(url: string, params: Object): Observable<any> {
+    console.log(
+      "Send request: " +
+        JSON.stringify(params) +
+        "a url: " +
+        this.odoo_server +
+        url
+    );
 
-    let options = this.buildRequest(url, params);//Llama a la creación de una request
-    this.headers = { headers : new HttpHeaders ({'Content-Type':'application/json','Access-Control-Allow-Origin':'*'})};
-    let a = this.http.post(this.odoo_server + url, options, this.headers);
+    let options = this.buildRequest(url, params); //Llama a la creación de una request
+    this.headers = new Headers({
+      "Content-Type": "application/json"
+    });
+    let a = this.http.post("/api" + url, options, this.headers);
     return a;
   }
 
@@ -56,7 +60,7 @@ export class odooLoginReq {
       jsonrpc: "2.0",
       method: "call",
       id: this.jsonRpcID,
-      params: params,
+      params: params
     });
   }
 }
